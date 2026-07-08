@@ -90,7 +90,7 @@
     
     <header class="text-white text-center py-5">
 
-        <h1 class="display-4">Zynon Frio Garcia</h1>
+        <h1 class="display-4">{{ personal.first_name }} {{ personal.last_name }}</h1>
         <h2 class="lead border-0">Computer Engineering Student</h2>
 
         <nav class="mt-4">
@@ -110,13 +110,7 @@
 
             <h2>About Me</h2>
 
-            <p>
-                I am Zynon Garcia, a 2nd Year Computer Engineering student with a passion and strong interest in
-                software development, website creation, and hardware development. I am currently learning
-                HTML, CSS, JavaScript, Python, and Django to strengthen my web
-                development skills and broaden my experience. I aspire to become a skilled software developer
-                and continue building useful and innovative applications and websites in the future.
-            </p>
+            <p>{{ personal.summary }}</p>
 
         </section>
 
@@ -150,33 +144,31 @@
         </section>
 
         
-        <section id="projects" class="card p-4 mb-5">
+       <section id="projects" class="card p-4 mb-5">
 
-            <h2>Projects</h2>
+    <h2>Projects</h2>
 
-            <h3>Personal Portfolio Website</h3>
+    <p>
+        Here are some of my projects:
+    </p>
 
-            <p>
-                A personal website that showcases my skills, projects, and contact
-                information that you are reading right now! (there's definitely more room for improvement haha)
-            </p>
 
-            <h3>Arduino Capstone Project</h3>
+    {% for project in projects %}
 
-            <p>
-                A project involving a camera attached to glasses to take a picture and read the words in that
-                picture out loud through text-to-speech to help assist the visually impaired.
-            </p>
+        <a href="{% url 'project_detail' project.id %}" class="btn btn-light btn-sm">
+            {{ project.project_name }}
+        </a>
 
-            <h3>Future Projects</h3>
+    {% empty %}
 
-            <p>
-                I plan to expand my knowledge about programming to create more web applications and
-                software projects as I continue learning. Specifically, the most plausible project I have right now is creating
-                a web application similar to LinkedIn but with a twist of some sort.
-            </p>
+        <p>
+            No projects available.
+        </p>
 
-        </section>
+    {% endfor %}
+
+
+</section>
 
        
         <section id="education" class="card p-4 mb-5">
@@ -202,9 +194,11 @@
 
             <h2>Contact Me</h2>
 
-            <p><strong>Email:</strong> zggarcia@student.hau.edu.ph</p>
+            <p><strong>Email: {{ personal.email }}</p>
 
-            <p><strong>Phone:</strong> +63 906 571 4951</p>
+            <p><strong>Phone: {{ personal.contact_number }}</p>
+
+            <p><strong>Address: {{ personal.address }}</p>   
 
             <p>
                 <strong>GitHub:</strong>
