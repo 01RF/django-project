@@ -3,14 +3,19 @@ from .models import Project, PersonalInformation
 
 
 def home(request):
+
     personal = PersonalInformation.objects.first()
 
+    projects = Project.objects.all()
+
     return render(request, "main/index.html", {
-        "personal": personal
+        "personal": personal,
+        "projects": projects
     })
 
 
 def project_list(request):
+
     projects = Project.objects.all()
 
     return render(request, "main/project_list.html", {
@@ -19,6 +24,7 @@ def project_list(request):
 
 
 def project_detail(request, id):
+
     project = get_object_or_404(Project, id=id)
 
     return render(request, "main/project_detail.html", {
@@ -27,6 +33,7 @@ def project_detail(request, id):
 
 
 def personal_information(request):
+
     personal = PersonalInformation.objects.first()
 
     return render(request, "main/personal_information.html", {
