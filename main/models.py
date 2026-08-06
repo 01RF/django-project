@@ -22,8 +22,9 @@ class PersonalInformation(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-    
-    class Testimony(models.Model):
+
+
+class Testimony(models.Model):
     full_name = models.CharField(max_length=100)
     content = models.TextField()
 
