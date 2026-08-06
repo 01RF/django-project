@@ -14,20 +14,37 @@
     <style>
 
         body{
-            background-color:#1a1a1a;
-            color:white;
+            background-color:#121212;
+            color:#f5f5f5;
+            font-family:Arial, Helvetica, sans-serif;
         }
 
         .navbar{
-            background-color:#111111;
+            background:#1b1b1b;
+            border-bottom:2px solid #444;
         }
 
         .testimonial-card{
-            background-color:#2b2b2b;
-            border:1px solid #555;
-            border-radius:12px;
+            background:#222;
+            border:1px solid #444;
+            border-radius:15px;
             padding:20px;
             margin-bottom:20px;
+        }
+
+        .btn-light{
+            background:#333;
+            color:#fff;
+            border:1px solid #555;
+        }
+
+        .btn-light:hover{
+            background:#555;
+            color:#fff;
+        }
+
+        .btn-outline-light:hover{
+            color:#000;
         }
 
     </style>
@@ -95,6 +112,12 @@
     {% endif %}
 
     <div class="text-center mt-4">
+
+        <a href="{% url 'add_testimony' %}" class="btn btn-light">
+
+            Leave a Testimony
+
+        </a>
 
         <a href="{% url 'home' %}" class="btn btn-outline-light">
 
