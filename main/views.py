@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Project, PersonalInformation, Inquiry, Testimony
 from .forms import ProjectForm, InquiryForm, TestimonyForm
+from django.views.generic import ListView, DetailView
 
 def home(request):
 
@@ -79,3 +80,39 @@ def contact(request):
     return render(request, "main/contact.html", {
         "form": form
     })
+
+def add_testimony(request):
+
+    if request.method == "POST":
+
+        form = TestimonyForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect("home")
+
+    else:
+
+        form = TestimonyForm()
+
+    return render(request, "main/add_testimony.html", {
+        "form": form
+    })
+
+class TestimonyListView(ListView):
+
+    model = Testimony
+
+    template_name = "main/testimony_list.html"
+
+    context_object_name = "testimonies"
+
+class TestimonyDetailView(DetailView):
+
+    model = Testimony
+
+    template_name = "main/testimony_detail.html"
+
+    context_object_name = "testimony"   
