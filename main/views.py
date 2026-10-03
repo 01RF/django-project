@@ -1,13 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Project, PersonalInformation, Inquiry, Testimony
-from .forms import ProjectForm, InquiryForm, TestimonyForm
+from .forms import ProjectForm, InquiryForm, TestimonyForm, AdminAuthenticationForm, DashboardProjectForm, TechStackForm
 from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, TemplateView
+from .models import Project, TechStack
 
 def home(request):
 
     personal = PersonalInformation.objects.first()
 
-    projects = Project.objects.all()
+    projects = Project.objects.prefetch_related("tech_stacks").all()
 
     return render(request, "main/index.html", {
         "personal": personal,
@@ -121,7 +126,7 @@ class TestimonyDetailView(DetailView):
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, TemplateView
-from .forms import AdminAuthenticationForm, ProjectForm, TechStackForm
+from .forms import AdminAuthenticationForm, DashboardProjectForm, TechStackForm
 from .models import Project, TechStack
 
 
@@ -131,7 +136,7 @@ class SuperuserRequiredMixin(UserPassesTestMixin):
 
 
 class AdminLoginView(LoginView):
-    template_name = "portfolio/admin_login.html"
+    template_name = "main/admin_login.html"
     authentication_form = AdminAuthenticationForm
 
     def get_success_url(self):
@@ -139,30 +144,30 @@ class AdminLoginView(LoginView):
 
 
 class DashboardView(SuperuserRequiredMixin, TemplateView):
-    template_name = "portfolio/dashboard.html"
+    template_name = "main/dashboard.html"
 
 
 class ProjectListView(SuperuserRequiredMixin, ListView):
     model = Project
-    template_name = "portfolio/dashboard_projects.html"
+    template_name = "main/dashboard_projects.html"
     context_object_name = "projects"
 
 
 class TechStackListView(SuperuserRequiredMixin, ListView):
     model = TechStack
-    template_name = "portfolio/dashboard_techstacks.html"
+    template_name = "main/dashboard_techstacks.html"
     context_object_name = "techstacks"
 
 
 class ProjectCreateView(SuperuserRequiredMixin, CreateView):
-    form_class = ProjectForm
-    template_name = "portfolio/form.html"
+    form_class = DashboardProjectForm
+    template_name = "main/form.html"
     success_url = reverse_lazy("dashboard_projects")
     extra_context = {"title": "Create Project"}
 
 
 class TechStackCreateView(SuperuserRequiredMixin, CreateView):
     form_class = TechStackForm
-    template_name = "portfolio/form.html"
+    template_name = "main/form.html"
     success_url = reverse_lazy("dashboard_techstacks")
     extra_context = {"title": "Create Tech Stack"}
