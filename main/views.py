@@ -116,3 +116,53 @@ class TestimonyDetailView(DetailView):
     template_name = "main/testimony_detail.html"
 
     context_object_name = "testimony"   
+
+    from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, TemplateView
+from .forms import AdminAuthenticationForm, ProjectForm, TechStackForm
+from .models import Project, TechStack
+
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_superuser
+
+
+class AdminLoginView(LoginView):
+    template_name = "portfolio/admin_login.html"
+    authentication_form = AdminAuthenticationForm
+
+    def get_success_url(self):
+        return reverse_lazy("dashboard")
+
+
+class DashboardView(SuperuserRequiredMixin, TemplateView):
+    template_name = "portfolio/dashboard.html"
+
+
+class ProjectListView(SuperuserRequiredMixin, ListView):
+    model = Project
+    template_name = "portfolio/dashboard_projects.html"
+    context_object_name = "projects"
+
+
+class TechStackListView(SuperuserRequiredMixin, ListView):
+    model = TechStack
+    template_name = "portfolio/dashboard_techstacks.html"
+    context_object_name = "techstacks"
+
+
+class ProjectCreateView(SuperuserRequiredMixin, CreateView):
+    form_class = ProjectForm
+    template_name = "portfolio/form.html"
+    success_url = reverse_lazy("dashboard_projects")
+    extra_context = {"title": "Create Project"}
+
+
+class TechStackCreateView(SuperuserRequiredMixin, CreateView):
+    form_class = TechStackForm
+    template_name = "portfolio/form.html"
+    success_url = reverse_lazy("dashboard_techstacks")
+    extra_context = {"title": "Create Tech Stack"}
