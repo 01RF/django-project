@@ -1,0 +1,8 @@
+{% extends "main/dash_base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+<ul>
+  <li><a href="{% url 'dashboard_projects' %}">List of all projects</a></li>
+  <li><a href="{% url 'dashboard_techstacks' %}">List of all tech stacks</a></li>
+</ul>
+{% endblock %}

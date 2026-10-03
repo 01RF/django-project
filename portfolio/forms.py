@@ -1,25 +1,7 @@
 from django import forms
-from .models import Project, Inquiry, Testimony
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Project, TechStack
 
-
-class ProjectForm(forms.ModelForm):
-    class Meta:
-        model = Project
-        fields = ["name", "description", "link"]
-
-
-class InquiryForm(forms.ModelForm):
-    class Meta:
-        model = Inquiry
-        fields = "__all__"
-
-
-class TestimonyForm(forms.ModelForm):
-    class Meta:
-        model = Testimony
-        fields = "__all__"
 
 class AdminAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
@@ -37,7 +19,7 @@ class TechStackForm(forms.ModelForm):
         fields = ["name"]
 
 
-class DashboardProjectForm(forms.ModelForm):
+class ProjectForm(forms.ModelForm):
     tech_stack = forms.ModelChoiceField(
         queryset=TechStack.objects.all(),
         widget=forms.RadioSelect,

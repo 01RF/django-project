@@ -1,0 +1,22 @@
+{% extends "main/dash_base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <h2>Projects</h2>
+  <a class="btn btn-primary" href="{% url 'project_create' %}">Create Project</a>
+</div>
+<table class="table table-bordered">
+  <thead><tr><th>Project Name</th><th>Description</th><th>Tech Stack</th><th>Link</th></tr></thead>
+  <tbody>
+  {% for p in projects %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.description|truncatechars:50 }}</td>
+      <td>{{ p.tech_stack_list }}</td>
+      <td><a href="{{ p.link }}" target="_blank">{{ p.link }}</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">No projects yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
